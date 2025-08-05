@@ -97,7 +97,7 @@ Arbox.EmployeeManagement/<br>
 
 3. **Change directory** into the project that contains your Migrations (Infrastructure):
    ```powershell
-   cd src\Infrastructure
+   cd src
    ```
 
 4. **Apply EF Core migrations**
@@ -105,7 +105,12 @@ Arbox.EmployeeManagement/<br>
    dotnet ef migrations add <MigrationName> --project Infrastructure --startup-project Web
    ```
 
-5. **Apply all pending migrations**:
+5. **Change directory** into the project that contains our Web:
+   ```powershell
+   cd Web
+   ```
+
+6. **Apply all pending migrations**:
    ```powershell
    dotnet ef database update --startup-project ..\Web\Web.csproj
    ```
