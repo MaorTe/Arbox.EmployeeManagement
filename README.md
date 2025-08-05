@@ -35,26 +35,26 @@ It leverages EF Core for data access, SQL Server for storage, and Clean Architec
 ---
 
 ## Folder Structure
-Arbox.EmployeeManagement/
-├── Core/                         # Domain entities and interfaces
-│   └── Entities/                 # Employee.cs, Department.cs
-├── Application/                  # Service interfaces
-│   └── Interfaces/               # IEmployeeService.cs, IDepartmentService.cs, IDashboardService.cs
-├── Infrastructure/               # EF Core DbContext, repositories, services
-│   ├── Data/                     # AppDbContext.cs, EF configurations
-│   ├── Migrations/               # Migration related files
-│   ├── Repositories/             # EmployeeRepository.cs, DepartmentRepository.cs
-│   └── Services/                 # EmployeeService.cs, DepartmentService.cs, DashboardService.cs
-├── Web/                          # Presentation layer (ASP-NET Core MVC)
-│   ├── Controllers/              # EmployeeController.cs, DepartmentController.cs, DashboardController.cs
-│   ├── ViewModels/               # EmployeeIndexViewModel.cs, EmployeeCreateViewModel.cs, DashboardViewModel.cs
-│   ├── Views/                    # Razor views (Employee/, Department/, Dashboard/, Shared/_Layout.cshtml, Error/)
-│   ├── Logs/                     # Error logs written to files
-│   ├── Middleware/               # ExceptionLoggingMiddleware.cs
-│   └── Program.cs                # Host setup, DI, middleware pipeline
-│   └── Dockerfile                # Assemble Docker container’s filesystem and runtime
-├── docker-compose.yml            # (optional) Bring-up with SQL Server & Web
-└── Arbox.EmployeeManagement.sln  # Solution file
+Arbox.EmployeeManagement/<br>
+├── Core/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Domain entities and interfaces<br>
+│   └── Entities/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Employee.cs, Department.cs<br>
+├── Application/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Service interfaces<br>
+│   └── Interfaces/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# IEmployeeService.cs, IDepartmentService.cs, IDashboardService.cs<br>
+├── Infrastructure/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# EF Core DbContext, repositories, services<br>
+│   ├── Data/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# AppDbContext.cs, EF configurations<br>
+│   ├── Migrations/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Migration related files<br>
+│   ├── Repositories/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# EmployeeRepository.cs, DepartmentRepository.cs<br>
+│   └── Services/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# EmployeeService.cs, DepartmentService.cs, DashboardService.cs<br>
+├── Web/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Presentation layer (ASP-NET Core MVC)<br>
+│   ├── Controllers/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# EmployeeController.cs, DepartmentController.cs, DashboardController.cs<br>
+│   ├── ViewModels/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# EmployeeIndexViewModel.cs, EmployeeCreateViewModel.cs, DashboardViewModel.cs<br>
+│   ├── Views/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Razor views (Employee/, Department/, Dashboard/, Shared/_Layout.cshtml, Error/)<br>
+│   ├── Logs/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Error logs written to files<br>
+│   ├── Middleware/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ExceptionLoggingMiddleware.cs<br>
+│   └── Program.cs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Host setup, DI, middleware pipeline<br>
+│   └── Dockerfile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Assemble Docker container’s filesystem and runtime<br>
+├── docker-compose.yml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# (optional) Bring-up with SQL Server & Web<br>
+└── Arbox.EmployeeManagement.sln&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Solution file
 
 ## Prerequisites
 
