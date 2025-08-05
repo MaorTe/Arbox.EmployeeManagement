@@ -1,0 +1,102 @@
+﻿@model Web.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>Dashboard</h1>
+
+<!-- 1. Filter form -->
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <label asp-for="SearchTerm" class="form-label">Search Name</label>
+        <input asp-for="SearchTerm" class="form-control" placeholder="Enter name…" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="DepartmentId" class="form-label">Department</label>
+        <select asp-for="DepartmentId"
+                asp-items="@(new SelectList(Model.Departments, "Id", "Name"))"
+                class="form-select">
+            <option value="">All Departments</option>
+        </select>
+    </div>
+    <div class="col-md-2 align-self-end">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+</form>
+
+<!-- 2. Immediately show filtered table -->
+<h2>Filtered Employees</h2>
+<div class="table-responsive mb-5" style="max-height: 300px; overflow-y: auto;">
+<table class="table table-sm mb-5">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Hire Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.FilteredEmployees.Any()) {
+            foreach (var e in Model.FilteredEmployees) {
+                <tr>
+                    <td>@e.Id</td>
+                    <td>@e.FirstName @e.LastName</td>
+                    <td>@e.Department?.Name</td>
+                    <td>@e.HireDate.ToShortDateString()</td>
+                </tr>
+            }
+        }
+        else {
+            <tr>
+                <td colspan="4" class="text-center fst-italic">
+                    No employees found.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
+<!-- 3. Then your core stats and other dashboard tables -->
+<div class="row mb-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Employees</h5>
+                <p class="card-text display-4">@Model.TotalEmployees</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Employees by Department -->
+<h2>Employees by Department</h2>
+<table class="table table-sm mb-4">
+    <thead>
+        <tr><th>Department</th><th>Employee Count</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var kv in Model.EmployeeCountByDepartment) {
+            var name = Model.Departments.First(d => d.Id == kv.Key).Name;
+            <tr><td>@name</td><td>@kv.Value</td></tr>
+        }
+    </tbody>
+</table>
+
+<!-- Recent Hires -->
+<h2>Recent Hires (Last 30 Days)</h2>
+<table class="table table-striped mb-4">
+    <thead>
+        <tr><th>Id</th><th>Name</th><th>Hire Date</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model.RecentHires) {
+            <tr>
+                <td>@e.Id</td>
+                <td>@e.FirstName @e.LastName</td>
+                <td>@e.HireDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

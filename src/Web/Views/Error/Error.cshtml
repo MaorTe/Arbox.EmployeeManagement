@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "_Layout";
+    var code = ViewData["StatusCode"] as int?;
+    ViewData["Title"] = code.HasValue ? $"Error {code}" : "Error";
+}
+
+<h1 class="mt-4">Oops—something went wrong.</h1>
+
+@if (code.HasValue) {
+    <h2>Status code: @code</h2>
+}
+
+<p>
+    An unexpected error occurred. Our team has been notified.
+    <a asp-controller="Dashboard" asp-action="Index">Return to Dashboard</a>
+</p>

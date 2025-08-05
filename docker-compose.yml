@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    env_file:
+      - .env
+    environment:
+      - SA_PASSWORD=${SA_PASSWORD}
+      - ACCEPT_EULA=${ACCEPT_EULA}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    healthcheck:
+      test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${SA_PASSWORD}", "-Q", "SELECT 1" ]
+      interval: 10s
+      retries: 10
+
+  web:
+    build:
+      context: .
+      dockerfile: src/Web/Dockerfile
+    env_file:
+      - .env
+    image: arbox/web:latest
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__Default=${CONNECTIONSTRINGS__Default}
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+    ports:
+      - "5246:80"
+      - "7037:443"
