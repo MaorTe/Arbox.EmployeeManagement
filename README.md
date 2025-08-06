@@ -53,7 +53,7 @@ Arbox.EmployeeManagement/<br>
 │   ├── Middleware/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ExceptionLoggingMiddleware.cs<br>
 │   └── Program.cs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Host setup, DI, middleware pipeline<br>
 │   └── Dockerfile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Assemble Docker container’s filesystem and runtime<br>
-├── docker-compose.yml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# (optional) Bring-up with SQL Server & Web<br>
+├── docker-compose.yml&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Bring-up with SQL Server & Web<br>
 └── Arbox.EmployeeManagement.sln&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Solution file
 
 ## Prerequisites
