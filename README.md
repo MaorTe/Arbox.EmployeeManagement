@@ -10,11 +10,9 @@ A .NET 9 ASP-NET Core MVC application for managing employees and departments, ba
 - [Folder Structure](#folder-structure)  
 - [Prerequisites](#prerequisites)  
 - [Installation](#installation)  
-- [Running the Application](#running-the-application)  
 - [Features & Routes](#features--routes)  
 - [Architecture Overview](#architecture-overview)  
 - [Technologies Used](#technologies-used)  
-- [Docker Setup (optional)](#docker-setup-optional)  
 
 ---
 
@@ -66,87 +64,80 @@ Arbox.EmployeeManagement/<br>
 
 ## Installation
 
-1. **Clone the repo**
+**Clone the repo**
    ```bash
    git clone https://github.com/MaorTe/Arbox.EmployeeManagement.git
    cd Arbox.EmployeeManagement
    ```
 
-2. **Configure your database**
-   Open `.env` and set your connection string under `"ConnectionStrings:Default"`:
-   ```json
-   "ConnectionStrings": {
-     "Default": "Server=localhost;Database=ArboxDb;User Id=sa;Password=YourPassword;TrustServerCertificate=true"
-   }
-   ```
+Docker-only (preferred)
+-----------------------
+Prereqs: Docker
+```
+Run:
+  docker compose up --build
 
-3. **Restore & build**
-   ```bash
-   dotnet restore
-   dotnet build
-   ```
-
-## Apply EF Core Migrations (host-side)
-
-1. **Open PowerShell (or CMD)** in your solution root (where you see `docker-compose.yml` and the `src` folder).
-
-2. **Point EF at your Dockerized database** by exporting the connection string into `ConnectionStrings__Default`:
-   ```powershell
-   $Env:ConnectionStrings__Default = "Server=localhost,1433;Database=ArboxDb;User Id=sa;Password={YourPassword};TrustServerCertificate=True"
-   ```
-
-3. **Change directory** into the project that contains your Migrations (Infrastructure):
-   ```powershell
-   cd src
-   ```
-
-4. **Apply EF Core migrations**
-   ```bash
-   dotnet ef migrations add <MigrationName> --project Infrastructure --startup-project Web
-   ```
-
-5. **Change directory** into the project that contains our Web:
-   ```powershell
-   cd Web
-   ```
-
-6. **Apply all pending migrations**:
-   ```powershell
-   dotnet ef database update --startup-project ..\Web\Web.csproj
-   ```
-
-   You should see:
-   ```
-   Applying migration '20250805_InitialCreate'.
-   Done.
-   ```
-   **Verify** in SSMS under **ArboxDb → Tables** that your tables now exist.
----
-
-## Restart your Web container
-
-```bash
-docker-compose up -d --no-deps web
+Open:
+  http://localhost:5246
 ```
 
----
+What happens:
+- SQL Server + API run in containers.
+- Connection string is injected by Compose (Server=db,1433;...).
+- The app auto-applies EF Core migrations on startup—no EF CLI needed.
 
-## Running the Application
+Only if needed - Reset DB (clean slate):
+  docker compose down -v
+  docker compose up --build
 
-### Via CLI
+Troubleshooting:
+- API logs: docker compose logs -f web
+- DB logs:  docker compose logs -f db
+- If web starts before DB is fully ready, wait a few seconds—transient retries + auto-migrate will complete.
 
-```bash
-cd src/Web
-dotnet run
+Local API + Docker DB
+---------------------
+Use this only if you want to run dotnet run on your machine.
+
+Prereqs: Docker Desktop, .NET SDK
+
+Validate appsettings.Development.json contains:
+  Server=localhost,1433;Database=ArboxDb;User Id=sa;Password=MySecureP@ss!;Encrypt=True;TrustServerCertificate=True
+
+Start DB in Docker
+```
+Run:
+  docker compose up -d db
+  dotnet restore
+  dotnet run --project src/Web
+Open:
+  http://localhost:5246
 ```
 
-By default it listens on the URLs in `launchSettings.json` (e.g. `http://localhost:5246`).
+Only if needed - Reset DB (clean slate):
+  docker compose down -v
+  docker compose up -d db
 
-### Via Visual Studio / VS Code
+Notes:
+- Local run connects to the Docker DB via localhost,1433.
+- The app auto-migrates on startup; EF CLI is not required.
+- If you previously started the web container, stop it to avoid port conflicts:
+    docker compose stop web
 
-1. Open `Arbox.EmployeeManagement.sln`.
-2. Set the **Web** project as startup.
-3. Run (F5) — the browser will open to the default route.
+
+Useful Commands (both modes)
+```
+  docker compose ps                  # show container status
+  docker compose logs -f web         # tail API logs
+  docker compose logs -f db          # tail DB logs
+  docker compose down -v             # stop & delete containers + DB volume
+```
+
+What’s Included
+- Auto-migrations on startup (Database.Migrate() in Program.cs)
+- Docker-only path (DB + API in containers)
+- Local + Docker DB path (API on host, DB in container)
+
 
 ---
 
