@@ -3,31 +3,30 @@ version: "3.9"
 services:
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    env_file:
-      - .env
     environment:
-      - SA_PASSWORD=${SA_PASSWORD}
-      - ACCEPT_EULA=${ACCEPT_EULA}
+      - SA_PASSWORD=MySecureP@ss!
+      - ACCEPT_EULA=Y
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "1433:1433"
+    # Simple TCP healthcheck; no sqlcmd required
     healthcheck:
-      test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${SA_PASSWORD}", "-Q", "SELECT 1" ]
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/1433'"]
       interval: 10s
+      timeout: 3s
       retries: 10
+      start_period: 20s
 
   web:
     build:
       context: .
       dockerfile: src/Web/Dockerfile
-    env_file:
-      - .env
     image: arbox/web:latest
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      - ConnectionStrings__Default=${CONNECTIONSTRINGS__Default}
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - ConnectionStrings__Default=Server=db,1433;Database=ArboxDb;User Id=sa;Password=MySecureP@ss!;Encrypt=True;TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
     ports:
       - "5246:80"
-      - "7037:443"
