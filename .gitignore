@@ -11,6 +11,8 @@
 # local dev overrides—you fill these in, do NOT commit!
 .env
 .env.*.local
+src/Web/appsettings.json
+!src/Web/appsettings.Development.json
 
 # User-specific files
 *.rsuser
