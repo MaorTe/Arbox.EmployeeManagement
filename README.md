@@ -68,7 +68,7 @@ Arbox.EmployeeManagement/<br>
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/YourUsername/Arbox.EmployeeManagement.git
+   git clone https://github.com/MaorTe/Arbox.EmployeeManagement.git
    cd Arbox.EmployeeManagement
    ```
 
